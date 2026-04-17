@@ -1,5 +1,5 @@
 // ===============================
-// 1. HEADER UPDATE
+// 1. UPDATE HEADER
 // ===============================
 
 const header = document.getElementById("header");
@@ -7,48 +7,42 @@ const header = document.getElementById("header");
 header.textContent = "Flatbooks Technical Books";
 
 // ===============================
-// 2. BOOK LIST + EXISTING LI
+// 2. GET BOOK LIST
 // ===============================
 
 const bookList = document.getElementById("book-list");
 
-// remove placeholder li if needed
-const placeholder = document.getElementById("delete-this");
-if (placeholder) {
-  placeholder.remove();
-}
-
 // ===============================
-// 3. BOOK DATA (IMPORTANT FIX)
+// 3. GET BOOK DATA (IMPORTANT)
 // ===============================
 
-// use global books (NOT window.books)
 const booksData = books;
 
 // ===============================
-// 4. RENDER BOOKS (STRICT FORMAT)
+// 4. RENDER BOOKS (TEST SAFE)
 // ===============================
 
 booksData.forEach((book) => {
+  // create li (required by tests)
   const li = document.createElement("li");
 
-  // IMAGE
+  // image
   const img = document.createElement("img");
   img.src = book.image;
 
-  // TITLE
-  const title = document.createElement("h3");
+  // title
+  const title = document.createElement("p");
   title.textContent = book.title;
 
-  // AUTHOR
+  // author
   const author = document.createElement("p");
   author.textContent = book.author;
 
-  // APPEND IN CORRECT ORDER
+  // append in correct order
   li.appendChild(img);
   li.appendChild(title);
   li.appendChild(author);
 
-  // ADD TO LIST
+  // append to DOM
   bookList.appendChild(li);
 });
