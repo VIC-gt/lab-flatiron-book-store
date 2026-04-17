@@ -1,71 +1,52 @@
 // ===============================
-// 1. SELECT AND UPDATE HEADER
+// 1. UPDATE HEADER TEXT
 // ===============================
 
-// Try common selectors used in Flatiron labs
-const header =
-  document.querySelector("h1") ||
-  document.querySelector("#title") ||
-  document.querySelector("header h1");
+// REQUIRED: id="header"
+const header = document.getElementById("header");
 
-// Update bookstore title
 if (header) {
-  header.textContent = "Flatbook";
+  header.textContent = "Flatbooks Technical Books";
 }
 
 // ===============================
-// 2. GET BOOK CONTAINER
+// 2. SELECT BOOK LIST CONTAINER
 // ===============================
 
-// Common container used in labs
-const bookContainer =
-  document.querySelector("#book-list") ||
-  document.querySelector(".books") ||
-  document.querySelector("#books");
+const bookList = document.getElementById("book-list");
 
 // ===============================
-// 3. BOOK DATA (if already provided, this will be ignored safely)
+// 3. BOOK DATA (from window object)
 // ===============================
 
-const books = window.books || [
-  // fallback sample structure (in case needed for testing)
-  {
-    title: "Sample Book",
-    author: "Unknown Author",
-    image:
-      "https://via.placeholder.com/150",
-  },
-];
+const books = window.books;
 
 // ===============================
-// 4. CREATE BOOK ELEMENTS
+// 4. CREATE BOOK ITEMS
 // ===============================
 
 books.forEach((book) => {
-  // Container for each book
-  const bookDiv = document.createElement("div");
-  bookDiv.classList.add("book");
+  // Create list item (IMPORTANT: tests expect <li>)
+  const li = document.createElement("li");
 
-  // Book Title
+  // Create title
   const bookTitle = document.createElement("h3");
   bookTitle.textContent = book.title;
 
-  // Book Author
+  // Create author
   const bookAuthor = document.createElement("p");
-  bookAuthor.textContent = `Author: ${book.author}`;
+  bookAuthor.textContent = book.author;
 
-  // Book Image
+  // Create image
   const bookImage = document.createElement("img");
-  bookImage.src = book.image || book.imageUrl;
+  bookImage.src = book.image;
   bookImage.alt = book.title;
 
-  // Append elements into book container
-  bookDiv.appendChild(bookImage);
-  bookDiv.appendChild(bookTitle);
-  bookDiv.appendChild(bookAuthor);
+  // Append elements into <li>
+  li.appendChild(bookImage);
+  li.appendChild(bookTitle);
+  li.appendChild(bookAuthor);
 
-  // Append book to main container
-  if (bookContainer) {
-    bookContainer.appendChild(bookDiv);
-  }
+  // Append to book list
+  bookList.appendChild(li);
 });
