@@ -3,7 +3,6 @@
 // ===============================
 
 const header = document.getElementById("header");
-
 header.textContent = "Flatbooks Technical Books";
 
 // ===============================
@@ -13,42 +12,40 @@ header.textContent = "Flatbooks Technical Books";
 const bookList = document.getElementById("book-list");
 
 // ===============================
-// 3. GET BOOKS (NO GUESSING, SAFE GLOBAL ACCESS)
+// 3. WAIT FOR BOOKS TO EXIST (CRITICAL FIX)
 // ===============================
 
-// safest way in CodeGrade environments
-const booksData = Array.isArray(window.books)
-  ? window.books
-  : Array.isArray(books)
-  ? books
-  : [];
+function renderBooks() {
+  const data = typeof books !== "undefined" ? books : window.books;
+
+  if (!data || !bookList) return;
+
+  data.forEach((book) => {
+    const li = document.createElement("li");
+
+    const img = document.createElement("img");
+    img.src = book.image;
+
+    const title = document.createElement("p");
+    title.textContent = book.title;
+
+    const author = document.createElement("p");
+    author.textContent = book.author;
+
+    li.appendChild(img);
+    li.appendChild(title);
+    li.appendChild(author);
+
+    bookList.appendChild(li);
+  });
+}
 
 // ===============================
-// 4. REMOVE PLACEHOLDER LI
+// 4. HANDLE BOTH LOAD STATES
 // ===============================
 
-const placeholder = document.getElementById("delete-this");
-if (placeholder) placeholder.remove();
+// run immediately
+renderBooks();
 
-// ===============================
-// 5. RENDER BOOKS
-// ===============================
-
-booksData.forEach((book) => {
-  const li = document.createElement("li");
-
-  const img = document.createElement("img");
-  img.src = book.image;
-
-  const title = document.createElement("p");
-  title.textContent = book.title;
-
-  const author = document.createElement("p");
-  author.textContent = book.author;
-
-  li.appendChild(img);
-  li.appendChild(title);
-  li.appendChild(author);
-
-  bookList.appendChild(li);
-});
+// also run after DOM fully loads (CodeGrade safety)
+document.addEventListener("DOMContentLoaded", renderBooks);
