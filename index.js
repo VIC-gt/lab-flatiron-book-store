@@ -1,58 +1,54 @@
 // ===============================
-// 1. UPDATE HEADER
+// 1. HEADER UPDATE
 // ===============================
 
 const header = document.getElementById("header");
 
-if (header) {
-  header.textContent = "Flatbooks Technical Books";
-}
+header.textContent = "Flatbooks Technical Books";
 
 // ===============================
-// 2. GET BOOK LIST
+// 2. BOOK LIST + EXISTING LI
 // ===============================
 
 const bookList = document.getElementById("book-list");
 
-// ===============================
-// 3. FIX: GET BOOKS SAFELY (IMPORTANT)
-// ===============================
-
-const booksData = window.books;
-
-// Safety check (prevents crash)
-if (!booksData) {
-  console.error("Books data is not defined (window.books is missing)");
+// remove placeholder li if needed
+const placeholder = document.getElementById("delete-this");
+if (placeholder) {
+  placeholder.remove();
 }
 
 // ===============================
-// 4. RENDER BOOKS
+// 3. BOOK DATA (IMPORTANT FIX)
 // ===============================
 
-if (bookList && booksData) {
-  booksData.forEach((book) => {
-    // CREATE REQUIRED LI
-    const li = document.createElement("li");
+// use global books (NOT window.books)
+const booksData = books;
 
-    // IMAGE
-    const img = document.createElement("img");
-    img.src = book.image;
-    img.alt = book.title;
+// ===============================
+// 4. RENDER BOOKS (STRICT FORMAT)
+// ===============================
 
-    // TITLE
-    const title = document.createElement("h3");
-    title.textContent = book.title;
+booksData.forEach((book) => {
+  const li = document.createElement("li");
 
-    // AUTHOR
-    const author = document.createElement("p");
-    author.textContent = book.author;
+  // IMAGE
+  const img = document.createElement("img");
+  img.src = book.image;
 
-    // APPEND INSIDE LI
-    li.appendChild(img);
-    li.appendChild(title);
-    li.appendChild(author);
+  // TITLE
+  const title = document.createElement("h3");
+  title.textContent = book.title;
 
-    // APPEND TO DOM
-    bookList.appendChild(li);
-  });
-}
+  // AUTHOR
+  const author = document.createElement("p");
+  author.textContent = book.author;
+
+  // APPEND IN CORRECT ORDER
+  li.appendChild(img);
+  li.appendChild(title);
+  li.appendChild(author);
+
+  // ADD TO LIST
+  bookList.appendChild(li);
+});
