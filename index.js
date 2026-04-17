@@ -1,8 +1,7 @@
 // ===============================
-// 1. UPDATE HEADER TEXT
+// 1. HEADER UPDATE
 // ===============================
 
-// REQUIRED: id="header"
 const header = document.getElementById("header");
 
 if (header) {
@@ -10,43 +9,52 @@ if (header) {
 }
 
 // ===============================
-// 2. SELECT BOOK LIST CONTAINER
+// 2. BOOK LIST CONTAINER
 // ===============================
 
 const bookList = document.getElementById("book-list");
 
 // ===============================
-// 3. BOOK DATA (from window object)
+// 3. GET BOOK DATA SAFELY
 // ===============================
 
-const books = window.books;
+// Some labs use window.books, others use a local variable
+const booksData = window.books || books;
 
 // ===============================
-// 4. CREATE BOOK ITEMS
+// 4. SAFETY CHECK (VERY IMPORTANT)
 // ===============================
 
-books.forEach((book) => {
-  // Create list item (IMPORTANT: tests expect <li>)
+if (!bookList || !booksData) {
+  console.error("Missing bookList or booksData");
+}
+
+// ===============================
+// 5. RENDER BOOKS
+// ===============================
+
+booksData.forEach((book) => {
+  // CREATE LI (REQUIRED BY TESTS)
   const li = document.createElement("li");
 
-  // Create title
-  const bookTitle = document.createElement("h3");
-  bookTitle.textContent = book.title;
+  // TITLE
+  const title = document.createElement("h3");
+  title.textContent = book.title;
 
-  // Create author
-  const bookAuthor = document.createElement("p");
-  bookAuthor.textContent = book.author;
+  // AUTHOR
+  const author = document.createElement("p");
+  author.textContent = book.author;
 
-  // Create image
-  const bookImage = document.createElement("img");
-  bookImage.src = book.image;
-  bookImage.alt = book.title;
+  // IMAGE
+  const img = document.createElement("img");
+  img.src = book.image;
+  img.alt = book.title;
 
-  // Append elements into <li>
-  li.appendChild(bookImage);
-  li.appendChild(bookTitle);
-  li.appendChild(bookAuthor);
+  // APPEND INSIDE LI
+  li.appendChild(img);
+  li.appendChild(title);
+  li.appendChild(author);
 
-  // Append to book list
+  // APPEND TO BOOK LIST
   bookList.appendChild(li);
 });
