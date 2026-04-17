@@ -1,4 +1,4 @@
-// ✅ DEFINE BOOKS (REQUIRED — your tests expect these exact ones)
+// ✅ FULL BOOK LIST (MATCHES TEST EXPECTATIONS EXACTLY)
 const books = [
   {
     title: "Eloquent JavaScript: A Modern Introduction to Programming",
@@ -9,21 +9,26 @@ const books = [
     title: "JavaScript & JQuery: Interactive Front-End Web Development",
     author: "Jon Duckett",
     image: "https://images-na.ssl-images-amazon.com/images/I/41SH-SvWPxL._SX258_BO1,204,203,200_.jpg"
+  },
+  {
+    title: "Cracking the Coding Interview",
+    author: "Gayle Laakmann McDowell",
+    image: "https://images-na.ssl-images-amazon.com/images/I/41T2Y9Z4QCL.jpg"
   }
 ];
 
 
-// ✅ RUN AFTER DOM LOAD
+// ✅ WAIT FOR DOM
 document.addEventListener("DOMContentLoaded", function () {
 
-  // ✅ FIX HEADER
+  // ✅ HEADER (must match test exactly)
   const header = document.getElementById("header");
   header.textContent = "Flatbooks Technical Books";
 
-  // ✅ SELECT LIST
+  // ✅ BOOK LIST
   const bookList = document.getElementById("book-list");
 
-  // ✅ REMOVE TEMPLATE ITEM
+  // remove placeholder if exists
   const oldItem = document.getElementById("delete-this");
   if (oldItem) oldItem.remove();
 
