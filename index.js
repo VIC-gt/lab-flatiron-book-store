@@ -1,48 +1,54 @@
 // ===============================
-// 1. UPDATE HEADER
+// 1. HEADER UPDATE
 // ===============================
 
 const header = document.getElementById("header");
 
-header.textContent = "Flatbooks Technical Books";
+if (header) {
+  header.textContent = "Flatbooks Technical Books";
+}
 
 // ===============================
-// 2. GET BOOK LIST
+// 2. BOOK LIST
 // ===============================
 
 const bookList = document.getElementById("book-list");
 
 // ===============================
-// 3. GET BOOK DATA (IMPORTANT)
+// 3. SAFE BOOK DATA ACCESS (CRITICAL FIX)
 // ===============================
 
-const booksData = books;
+// try both possible sources safely
+const booksData = typeof books !== "undefined" ? books : window.books;
 
-// ===============================
-// 4. RENDER BOOKS (TEST SAFE)
-// ===============================
+// stop if missing (prevents crash)
+if (!booksData || !bookList) {
+  console.error("Missing booksData or bookList");
+} else {
+  // ===============================
+  // 4. RENDER BOOKS
+  // ===============================
 
-booksData.forEach((book) => {
-  // create li (required by tests)
-  const li = document.createElement("li");
+  booksData.forEach((book) => {
+    const li = document.createElement("li");
 
-  // image
-  const img = document.createElement("img");
-  img.src = book.image;
+    // image
+    const img = document.createElement("img");
+    img.src = book.image;
 
-  // title
-  const title = document.createElement("p");
-  title.textContent = book.title;
+    // title
+    const title = document.createElement("p");
+    title.textContent = book.title;
 
-  // author
-  const author = document.createElement("p");
-  author.textContent = book.author;
+    // author
+    const author = document.createElement("p");
+    author.textContent = book.author;
 
-  // append in correct order
-  li.appendChild(img);
-  li.appendChild(title);
-  li.appendChild(author);
+    // append
+    li.appendChild(img);
+    li.appendChild(title);
+    li.appendChild(author);
 
-  // append to DOM
-  bookList.appendChild(li);
-});
+    bookList.appendChild(li);
+  });
+}
