@@ -1,54 +1,51 @@
-// ===============================
-// 1. HEADER UPDATE
-// ===============================
+const baseURL = "https://api.weather.gov/alerts/active?area=";
 
-const header = document.getElementById("header");
+const input = document.getElementById("state-input");
+const button = document.getElementById("get-weather");
+const display = document.getElementById("alerts-display");
+const errorBox = document.getElementById("error-message");
 
-if (header) {
-  header.textContent = "Flatbooks Technical Books";
+button.addEventListener("click", async () => {
+  const state = input.value.trim().toUpperCase();
+
+  // clear previous UI state
+  errorBox.textContent = "";
+  errorBox.classList.add("hidden");
+  display.innerHTML = "";
+
+  try {
+    const response = await fetch(baseURL + state);
+
+    if (!response.ok) {
+      throw new Error("Request failed");
+    }
+
+    const data = await response.json();
+    displayWeather(data);
+
+  } catch (err) {
+    displayError(err.message);
+  }
+
+  input.value = "";
+});
+
+function displayWeather(data) {
+  const alerts = data.features || [];
+
+  const title = document.createElement("h2");
+  title.textContent = `Weather Alerts: ${alerts.length}`;
+
+  display.appendChild(title);
+
+  alerts.forEach(alert => {
+    const p = document.createElement("p");
+    p.textContent = alert.properties.headline;
+    display.appendChild(p);
+  });
 }
 
-// ===============================
-// 2. BOOK LIST
-// ===============================
-
-const bookList = document.getElementById("book-list");
-
-// ===============================
-// 3. SAFE BOOK DATA ACCESS (CRITICAL FIX)
-// ===============================
-
-// try both possible sources safely
-const booksData = typeof books !== "undefined" ? books : window.books;
-
-// stop if missing (prevents crash)
-if (!booksData || !bookList) {
-  console.error("Missing booksData or bookList");
-} else {
-  // ===============================
-  // 4. RENDER BOOKS
-  // ===============================
-
-  booksData.forEach((book) => {
-    const li = document.createElement("li");
-
-    // image
-    const img = document.createElement("img");
-    img.src = book.image;
-
-    // title
-    const title = document.createElement("p");
-    title.textContent = book.title;
-
-    // author
-    const author = document.createElement("p");
-    author.textContent = book.author;
-
-    // append
-    li.appendChild(img);
-    li.appendChild(title);
-    li.appendChild(author);
-
-    bookList.appendChild(li);
-  });
+function displayError(message) {
+  errorBox.textContent = message;
+  errorBox.classList.remove("hidden");
 }
