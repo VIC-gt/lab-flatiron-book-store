@@ -1,51 +1,62 @@
-const baseURL = "https://api.weather.gov/alerts/active?area=";
+// ===============================
+// WAIT UNTIL DOM IS READY
+// ===============================
 
-const input = document.getElementById("state-input");
-const button = document.getElementById("get-weather");
-const display = document.getElementById("alerts-display");
-const errorBox = document.getElementById("error-message");
+document.addEventListener("DOMContentLoaded", () => {
 
-button.addEventListener("click", async () => {
-  const state = input.value.trim().toUpperCase();
+  // ===============================
+  // 1. UPDATE HEADER
+  // ===============================
 
-  // clear previous UI state
-  errorBox.textContent = "";
-  errorBox.classList.add("hidden");
-  display.innerHTML = "";
+  const header = document.getElementById("header");
 
-  try {
-    const response = await fetch(baseURL + state);
-
-    if (!response.ok) {
-      throw new Error("Request failed");
-    }
-
-    const data = await response.json();
-    displayWeather(data);
-
-  } catch (err) {
-    displayError(err.message);
+  if (header) {
+    header.textContent = "Flatbooks Technical Books";
   }
 
-  input.value = "";
-});
+  // ===============================
+  // 2. GET BOOK LIST
+  // ===============================
 
-function displayWeather(data) {
-  const alerts = data.features || [];
+  const bookList = document.getElementById("book-list");
 
-  const title = document.createElement("h2");
-  title.textContent = `Weather Alerts: ${alerts.length}`;
+  // ===============================
+  // 3. GET BOOKS (CRITICAL FIX)
+  // ===============================
 
-  display.appendChild(title);
+  const booksData = typeof books !== "undefined" ? books : [];
 
-  alerts.forEach(alert => {
-    const p = document.createElement("p");
-    p.textContent = alert.properties.headline;
-    display.appendChild(p);
+  // ===============================
+  // 4. CLEAR PLACEHOLDER IF EXISTS
+  // ===============================
+
+  const placeholder = document.getElementById("delete-this");
+  if (placeholder) {
+    placeholder.remove();
+  }
+
+  // ===============================
+  // 5. RENDER BOOKS
+  // ===============================
+
+  booksData.forEach((book) => {
+
+    const li = document.createElement("li");
+
+    const img = document.createElement("img");
+    img.src = book.image;
+
+    const title = document.createElement("h3");
+    title.textContent = book.title;
+
+    const author = document.createElement("p");
+    author.textContent = book.author;
+
+    li.appendChild(img);
+    li.appendChild(title);
+    li.appendChild(author);
+
+    bookList.appendChild(li);
   });
-}
 
-function displayError(message) {
-  errorBox.textContent = message;
-  errorBox.classList.remove("hidden");
-}
+});
