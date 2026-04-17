@@ -1,58 +1,71 @@
-// ✅ FULL BOOK LIST (MATCHES TEST EXPECTATIONS EXACTLY)
-const books = [
+// ===============================
+// 1. SELECT AND UPDATE HEADER
+// ===============================
+
+// Try common selectors used in Flatiron labs
+const header =
+  document.querySelector("h1") ||
+  document.querySelector("#title") ||
+  document.querySelector("header h1");
+
+// Update bookstore title
+if (header) {
+  header.textContent = "Flatbook";
+}
+
+// ===============================
+// 2. GET BOOK CONTAINER
+// ===============================
+
+// Common container used in labs
+const bookContainer =
+  document.querySelector("#book-list") ||
+  document.querySelector(".books") ||
+  document.querySelector("#books");
+
+// ===============================
+// 3. BOOK DATA (if already provided, this will be ignored safely)
+// ===============================
+
+const books = window.books || [
+  // fallback sample structure (in case needed for testing)
   {
-    title: "Eloquent JavaScript: A Modern Introduction to Programming",
-    author: "Marijn Haverbeke",
-    image: "https://images-na.ssl-images-amazon.com/images/I/91asIC1fRwL.jpg"
+    title: "Sample Book",
+    author: "Unknown Author",
+    image:
+      "https://via.placeholder.com/150",
   },
-  {
-    title: "JavaScript & JQuery: Interactive Front-End Web Development",
-    author: "Jon Duckett",
-    image: "https://images-na.ssl-images-amazon.com/images/I/41SH-SvWPxL._SX258_BO1,204,203,200_.jpg"
-  },
-  {
-    title: "Cracking the Coding Interview",
-    author: "Gayle Laakmann McDowell",
-    image: "https://images-na.ssl-images-amazon.com/images/I/41T2Y9Z4QCL.jpg"
-  }
 ];
 
+// ===============================
+// 4. CREATE BOOK ELEMENTS
+// ===============================
 
-// ✅ WAIT FOR DOM
-document.addEventListener("DOMContentLoaded", function () {
+books.forEach((book) => {
+  // Container for each book
+  const bookDiv = document.createElement("div");
+  bookDiv.classList.add("book");
 
-  // ✅ HEADER (must match test exactly)
-  const header = document.getElementById("header");
-  header.textContent = "Flatbooks Technical Books";
+  // Book Title
+  const bookTitle = document.createElement("h3");
+  bookTitle.textContent = book.title;
 
-  // ✅ BOOK LIST
-  const bookList = document.getElementById("book-list");
+  // Book Author
+  const bookAuthor = document.createElement("p");
+  bookAuthor.textContent = `Author: ${book.author}`;
 
-  // remove placeholder if exists
-  const oldItem = document.getElementById("delete-this");
-  if (oldItem) oldItem.remove();
+  // Book Image
+  const bookImage = document.createElement("img");
+  bookImage.src = book.image || book.imageUrl;
+  bookImage.alt = book.title;
 
-  // ✅ LOOP THROUGH BOOKS
-  books.forEach(function (book) {
+  // Append elements into book container
+  bookDiv.appendChild(bookImage);
+  bookDiv.appendChild(bookTitle);
+  bookDiv.appendChild(bookAuthor);
 
-    const li = document.createElement("li");
-
-    const title = document.createElement("h2");
-    title.textContent = book.title;
-
-    const author = document.createElement("p");
-    author.textContent = book.author;
-
-    const img = document.createElement("img");
-    img.src = book.image;
-    img.alt = book.title;
-
-    li.appendChild(title);
-    li.appendChild(author);
-    li.appendChild(img);
-
-    bookList.appendChild(li);
-
-  });
-
+  // Append book to main container
+  if (bookContainer) {
+    bookContainer.appendChild(bookDiv);
+  }
 });
