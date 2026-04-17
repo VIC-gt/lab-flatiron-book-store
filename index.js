@@ -1,63 +1,58 @@
 // index.js
 
-// Book catalog data
-const bookstore = {
-  storeName: "Flatbooks",
-  books: [
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Task 1: Update the header with id 'header' to exact text "Flatbooks Technical Books"
+  const header = document.getElementById('header');
+  if (header) {
+    header.textContent = 'Flatbooks Technical Books';
+  }
+  
+  // Task 2: Get the book data from the existing data structure (provided in HTML)
+  const booksData = [
     {
-      title: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=600&fit=crop"
+      title: 'Eloquent JavaScript: A Modern Introduction to Programming',
+      author: 'Marijn Haverbeke',
+      image: 'https://images-na.ssl-images-amazon.com/images/I/81NRjiL4WKL.jpg'
     },
     {
-      title: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop"
+      title: 'You Don\'t Know JS',
+      author: 'Kyle Simpson',
+      image: 'https://images-na.ssl-images-amazon.com/images/I/41fwbRoP7YL.jpg'
     },
     {
-      title: "1984",
-      author: "George Orwell",
-      image: "https://images.unsplash.com/photo-1540206395-68808572332f?w=400&h=600&fit=crop"
+      title: 'JavaScript: The Good Parts',
+      author: 'Douglas Crockford',
+      image: 'https://images-na.ssl-images-amazon.com/images/I/51zN1jxYgYL.jpg'
     },
     {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=600&fit=crop"
+      title: 'HTML and CSS: Design and Build Websites',
+      author: 'Jon Duckett',
+      image: 'https://images-na.ssl-images-amazon.com/images/I/81QRQOKXEbL.jpg'
     }
-  ]
-};
-
-// Step 1: Update the existing title on the page
-function updateStoreTitle() {
-  const headerElement = document.querySelector('h1');
-  if (headerElement) {
-    headerElement.textContent = bookstore.storeName;
-  }
-}
-
-// Step 2: Create book elements and append to DOM
-function createBookElements() {
-  // Select the container where books will be appended
-  const bookContainer = document.querySelector('.books-container') || 
-                       document.querySelector('main') || 
-                       document.body;
+  ];
   
-  // Create books section if it doesn't exist
-  let booksSection = document.querySelector('.books-section');
-  if (!booksSection) {
-    booksSection = document.createElement('section');
-    booksSection.className = 'books-section';
-    const booksTitle = document.createElement('h2');
-    booksTitle.textContent = 'Our Catalog';
-    booksSection.appendChild(booksTitle);
-    bookContainer.appendChild(booksSection);
+  // Task 3: Select the #book-list element
+  const bookList = document.getElementById('book-list');
+  
+  // Remove the existing "delete-this" li
+  const deleteLi = document.getElementById('delete-this');
+  if (deleteLi && deleteLi.parentNode) {
+    deleteLi.parentNode.removeChild(deleteLi);
   }
   
-  // Loop through each book and create elements
-  bookstore.books.forEach(book => {
-    // Create book container
-    const bookElement = document.createElement('div');
-    bookElement.className = 'book-container';
+  // Task 4: Create and append book elements for each book
+  booksData.forEach(function(book) {
+    // Create book container (li element)
+    const bookContainer = document.createElement('li');
+    bookContainer.className = 'book-container';
+    
+    // Create book image
+    const bookImage = document.createElement('img');
+    bookImage.className = 'book-image';
+    bookImage.src = book.image;
+    bookImage.alt = book.title;
     
     // Create book title
     const bookTitle = document.createElement('h3');
@@ -67,26 +62,15 @@ function createBookElements() {
     // Create book author
     const bookAuthor = document.createElement('p');
     bookAuthor.className = 'book-author';
-    bookAuthor.textContent = `by ${book.author}`;
+    bookAuthor.textContent = book.author;
     
-    // Create book image
-    const bookImage = document.createElement('img');
-    bookImage.className = 'book-image';
-    bookImage.src = book.image;
-    bookImage.alt = `${book.title} by ${book.author}`;
+    // Append elements in correct order: image -> title -> author
+    bookContainer.appendChild(bookImage);
+    bookContainer.appendChild(bookTitle);
+    bookContainer.appendChild(bookAuthor);
     
-    // Append elements to book container
-    bookElement.appendChild(bookImage);
-    bookElement.appendChild(bookTitle);
-    bookElement.appendChild(bookAuthor);
-    
-    // Append book container to books section
-    booksSection.appendChild(bookElement);
+    // Append book container to #book-list
+    bookList.appendChild(bookContainer);
   });
-}
-
-// Initialize the page when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  updateStoreTitle();
-  createBookElements();
+  
 });
