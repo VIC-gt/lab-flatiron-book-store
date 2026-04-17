@@ -1,62 +1,54 @@
 // ===============================
-// WAIT UNTIL DOM IS READY
+// 1. HEADER UPDATE
 // ===============================
 
-document.addEventListener("DOMContentLoaded", () => {
+const header = document.getElementById("header");
 
-  // ===============================
-  // 1. UPDATE HEADER
-  // ===============================
+header.textContent = "Flatbooks Technical Books";
 
-  const header = document.getElementById("header");
+// ===============================
+// 2. BOOK LIST
+// ===============================
 
-  if (header) {
-    header.textContent = "Flatbooks Technical Books";
-  }
+const bookList = document.getElementById("book-list");
 
-  // ===============================
-  // 2. GET BOOK LIST
-  // ===============================
+// ===============================
+// 3. GET BOOKS (NO GUESSING, SAFE GLOBAL ACCESS)
+// ===============================
 
-  const bookList = document.getElementById("book-list");
+// safest way in CodeGrade environments
+const booksData = Array.isArray(window.books)
+  ? window.books
+  : Array.isArray(books)
+  ? books
+  : [];
 
-  // ===============================
-  // 3. GET BOOKS (CRITICAL FIX)
-  // ===============================
+// ===============================
+// 4. REMOVE PLACEHOLDER LI
+// ===============================
 
-  const booksData = typeof books !== "undefined" ? books : [];
+const placeholder = document.getElementById("delete-this");
+if (placeholder) placeholder.remove();
 
-  // ===============================
-  // 4. CLEAR PLACEHOLDER IF EXISTS
-  // ===============================
+// ===============================
+// 5. RENDER BOOKS
+// ===============================
 
-  const placeholder = document.getElementById("delete-this");
-  if (placeholder) {
-    placeholder.remove();
-  }
+booksData.forEach((book) => {
+  const li = document.createElement("li");
 
-  // ===============================
-  // 5. RENDER BOOKS
-  // ===============================
+  const img = document.createElement("img");
+  img.src = book.image;
 
-  booksData.forEach((book) => {
+  const title = document.createElement("p");
+  title.textContent = book.title;
 
-    const li = document.createElement("li");
+  const author = document.createElement("p");
+  author.textContent = book.author;
 
-    const img = document.createElement("img");
-    img.src = book.image;
+  li.appendChild(img);
+  li.appendChild(title);
+  li.appendChild(author);
 
-    const title = document.createElement("h3");
-    title.textContent = book.title;
-
-    const author = document.createElement("p");
-    author.textContent = book.author;
-
-    li.appendChild(img);
-    li.appendChild(title);
-    li.appendChild(author);
-
-    bookList.appendChild(li);
-  });
-
+  bookList.appendChild(li);
 });
